@@ -60,7 +60,6 @@ public class Calculator {
                 unUnusedIndex += 1;
                 pointer2 += 1;
                 pointer1 = pointer2;
-
             }
         }
         split[unUnusedIndex] = data.substring(pointer1, pointer2);
@@ -80,7 +79,7 @@ public class Calculator {
                 break;
             }
             if (isNumber(element)) {
-                stack.push(Float.parseFloat(element));
+                stack.push(Float.valueOf(element));
             }
             else if (isOperator(element)) {
                 if (element.compareTo("-") == 0) {
@@ -93,19 +92,23 @@ public class Calculator {
                     pointer += 1;
                     float firstNumber = stack.pop();
                     float nextNumber = Float.parseFloat(data[pointer]);
+                    float total;
                     if (firstNumber < 0) {
-                        float previousNumber = stack.pop();
-                        stack.push(previousNumber *= -1);
                         firstNumber = Math.abs(firstNumber);
+                        total = firstNumber * nextNumber;
+                        total = total *= -1;
                     }
-                    stack.push(firstNumber * nextNumber);
+                    else {
+                        total = firstNumber * nextNumber;
+                    }
+                    stack.push(total);
                 }
                 else if (element.compareTo("/") == 0) {
                     float numberOne = stack.pop();
                     pointer += 1;
                     float nextNumber = Float.parseFloat(data[pointer]);
                     if (numberOne == 0 || nextNumber == 0) {
-                        System.out.println("Cannot divide by zero");
+                        System.out.println("ArithmeticException: Cannot divide by zero");
                         System.exit(0);
                     }
                     stack.push(numberOne / nextNumber);
