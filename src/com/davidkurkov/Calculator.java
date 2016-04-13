@@ -6,24 +6,27 @@ import java.util.StringTokenizer;
  * Created by david on 4/6/16.
  */
 public class Calculator {
-    CustomStack stack = new CustomStack();
+    CustomStack stack;
 
-    Calculator(String data) {
+    public Number calculate(String data) {
+        stack = new CustomStack();
         if (!isNotValidData(data)) {
             String[] filteredData = splitElements(data);
             populateStack(filteredData);
             float total = countUpStack();
             if (total % 1 == 0) {
-                System.out.println(Math.round(total));
+                System.out.println(data + " = " + Math.round(total));
+                return Math.round(total);
             }
             else {
-                System.out.println(total);
+                System.out.println(data + " = " + total);
+                return total;
             }
         }
         else {
-            throw new IllegalArgumentException("Operator was found at beginning or end of input");
+            System.out.println("IllegalArgument: Operator was found at beginning or end of input.");
+            return -1;
         }
-
     }
 
     private boolean isNotValidData(String data) {
@@ -102,7 +105,8 @@ public class Calculator {
                     pointer += 1;
                     float nextNumber = Float.parseFloat(data[pointer]);
                     if (numberOne == 0 || nextNumber == 0) {
-                        throw new IllegalArgumentException("Cannot divide by zero");
+                        System.out.println("Cannot divide by zero");
+                        System.exit(0);
                     }
                     stack.push(numberOne / nextNumber);
                 }

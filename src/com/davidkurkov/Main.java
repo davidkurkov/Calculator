@@ -9,16 +9,17 @@ public class Main extends TestCase {
     }
 
     private static void testCalculator() {
-        new Calculator("52*4+2-4"); // 206
-        new Calculator("8"); // 8
-        new Calculator("10/3"); // 3.3333333
-        new Calculator("4+3*9/2"); // 17.5
-        new Calculator("10-14"); // -4
-        new Calculator("244-178*449"); // 79678
-        new Calculator("24584+17866112*98"); // 1750903552
-//        new Calculator("244/0"); // ArithmeticException, DivisionByZero
-//        new Calculator("*10+11-12"); // IllegalArgumentException
-//        new Calculator("10+15-"); // IllegalArgumentException
+        Calculator calculator = new Calculator();
+        assertEquals(206, calculator.calculate("52*4+2-4"));
+        assertEquals(8, calculator.calculate("8"));
+        assertEquals(3.333333, (Float) calculator.calculate("10/3"), 0.0001);
+        assertEquals(17.5, (Float) calculator.calculate("4+3*9/2"), 0.00f);
+        assertEquals(-4, calculator.calculate("10-14"));
+        assertEquals(79678, calculator.calculate("244-178*449"));
+        assertEquals(1750903552, calculator.calculate("24584+17866112*98"));
+        assertEquals(-1, calculator.calculate("*10+11-12"));
+        assertEquals(-1, calculator.calculate("10+15-"));
+        assertNull(calculator.calculate("244/0"));
     }
 
 }
