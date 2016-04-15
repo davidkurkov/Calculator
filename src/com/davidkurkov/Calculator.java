@@ -48,7 +48,10 @@ public class Calculator {
         int unUnusedIndex = 0;
         int pointer1 = 0;
         int pointer2 = 0;
-
+        //if I have a space in the data being sent in, it breaks in here. you end up with an array like so:
+        //incoming data = "2 +1"
+        //final array: "2", " ", "", "+", "1" <-note that this is more spots in your array than you have room for
+        //thus you get an intex out of bounds exception
         while (pointer2 <= data.length() - 1) {
             if (isNumber(data.substring(pointer2, pointer2+1))) {
                 pointer2 += 1;
@@ -67,13 +70,17 @@ public class Calculator {
     }
 
     private void populateStack(String[] data) {
-        int pointer = 0;
+        int pointer = 0; //just a nitpick, but this shouldn't be called a pointer. A pointer is a real thing,
+        //it has very specific connotations. The way you're using this variable more closely conforms to something
+        //called an 'index'. Or, sometimes, 'idx', or even just 'i'. An index is just a well understood int variable
+        //that tracks the position of the spot you're examining in an array. It's just a convention, and there's no
+        //hard or fast rules.
 
         if (data.length == 1) {
             stack.push(Float.parseFloat(data[0]));
         }
 
-        while (pointer < data.length - 1) {
+        while (pointer < data.length - 1) { //BUG!!!! Off by one error. "2+1" equals 2. You never get to the last plus number.
             String element = data[pointer];
             if (element == null) {
                 break;
@@ -84,7 +91,8 @@ public class Calculator {
             else if (isOperator(element)) {
                 if (element.compareTo("-") == 0) {
                     String negative = "-";
-                    pointer += 1;
+                    pointer += 1; //you've got this line several times in here. You're looking forward, and should be
+                    //looking backwards. That means you've got to hang on to the operation till next time around the loop.
                     negative += data[pointer];
                     stack.push(Float.parseFloat(negative));
                 }
